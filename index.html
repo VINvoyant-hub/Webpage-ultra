@@ -1,0 +1,1310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0B0E12" />
+  <title>VINvoyant — Concierge Vehicle Intelligence</title>
+  <meta name="description" content="VIN-based maintenance forecasting, remote diagnosis, parts pricing, and concierge guidance—built by a master-certified Mercedes/AMG technician." />
+  <style>
+    :root{
+      --bg0:#05070A;
+      --bg1:#0B0E12;
+      --paper:#F6F3EE;
+      --ink:#0A0C10;
+      --ink2: rgba(10,12,16,.74);
+      --white: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --line: rgba(255,255,255,.14);
+      --line2: rgba(10,12,16,.14);
+      --accent:#31D6FF;
+      --accent2:#E8C15A;
+      --danger:#FF6B6B;
+      --shadow: 0 26px 90px rgba(0,0,0,.48);
+      --shadow2: 0 18px 70px rgba(0,0,0,.25);
+      --r1: 18px;
+      --r2: 28px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    html, body{height:100%}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--white);
+      background:
+        radial-gradient(1200px 800px at 10% 0%, rgba(49,214,255,.14), transparent 60%),
+        radial-gradient(900px 700px at 80% 20%, rgba(232,193,90,.10), transparent 55%),
+        radial-gradient(900px 650px at 50% 95%, rgba(49,214,255,.09), transparent 60%),
+        linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 75%, #040507 100%);
+      overflow-x:hidden;
+    }
+
+    /* subtle “grain” without images */
+    body:before{
+      content:"";
+      position:fixed;
+      inset:-20%;
+      pointer-events:none;
+      opacity:.06;
+      background:
+        repeating-radial-gradient(circle at 20% 30%, rgba(255,255,255,.8) 0 1px, transparent 1px 6px),
+        repeating-radial-gradient(circle at 80% 60%, rgba(255,255,255,.8) 0 1px, transparent 1px 7px);
+      filter: blur(.6px);
+      mix-blend-mode: overlay;
+      transform: rotate(-6deg);
+    }
+
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding: 0 18px}
+    .top{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(5,7,10,.78), rgba(5,7,10,.35));
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding: 14px 0;
+    }
+    .navLeft{display:flex; align-items:center; gap:12px; min-width: 220px}
+    .logo{
+      height: 26px;
+      filter: invert(1); /* lockup is black; invert for dark bg */
+      opacity:.96;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.82);
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      white-space:nowrap;
+    }
+    .dot{
+      width:10px; height:10px; border-radius: 999px;
+      background: rgba(49,214,255,.95);
+      box-shadow: 0 0 0 6px rgba(49,214,255,.14);
+    }
+    .navLinks{
+      display:flex; gap: 16px; flex-wrap:wrap; justify-content:center;
+      font-size: 13px;
+      color: rgba(255,255,255,.72);
+    }
+    .navLinks a{
+      text-decoration:none;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: .18s ease;
+    }
+    .navLinks a:hover{
+      border-color: rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.92);
+    }
+    .navCtas{display:flex; gap:10px; justify-content:flex-end; min-width: 220px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(49,214,255,.42);
+      background: rgba(49,214,255,.16);
+      color: rgba(255,255,255,.92);
+      font-weight: 860;
+      text-decoration:none;
+      cursor:pointer;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(49,214,255,.70); background: rgba(49,214,255,.22);}
+    .btn.ghost{
+      border-color: rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+    }
+    .btn.warm{
+      border-color: rgba(232,193,90,.45);
+      background: rgba(232,193,90,.14);
+    }
+    .btn.warm:hover{border-color: rgba(232,193,90,.75); background: rgba(232,193,90,.18);}
+    .btn.small{padding: 10px 12px; border-radius: 12px; font-size: 13px}
+    .btn:active{transform: translateY(0px) scale(.99);}
+
+    header.hero{
+      padding: 54px 0 18px;
+      position:relative;
+    }
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items:stretch;
+    }
+    .hCard{
+      border-radius: var(--r2);
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(900px 520px at 18% 8%, rgba(49,214,255,.18), transparent 55%),
+        radial-gradient(700px 520px at 90% 18%, rgba(232,193,90,.12), transparent 55%),
+        rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hLeft{padding: 22px}
+    .kicker{
+      display:inline-flex; gap:10px; align-items:center;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.86);
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    h1{
+      margin: 14px 0 10px;
+      font-size: clamp(36px, 4.2vw, 60px);
+      letter-spacing: -0.04em;
+      line-height: 1.02;
+    }
+    .sub{
+      margin: 10px 0 16px;
+      font-size: 16px;
+      line-height: 1.55;
+      color: rgba(255,255,255,.78);
+      max-width: 60ch;
+    }
+    .micro{
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(255,255,255,.70);
+    }
+    .micro b{color: rgba(255,255,255,.92)}
+    .burst{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top: 16px;
+    }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.78);
+      font-size: 13px;
+      white-space:nowrap;
+    }
+    .mono{font-family: var(--mono); letter-spacing:.10em}
+    .chip i{
+      width:8px; height:8px; border-radius:999px;
+      background: rgba(49,214,255,.92);
+      box-shadow: 0 0 0 5px rgba(49,214,255,.12);
+      display:inline-block;
+    }
+
+    .hRight{
+      padding: 18px;
+      display:flex; flex-direction:column; gap: 14px;
+    }
+    .spec{
+      border-radius: var(--r2);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      padding: 14px;
+      position:relative;
+      overflow:hidden;
+    }
+    .spec:before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:
+        radial-gradient(circle at 40% 40%, rgba(49,214,255,.20), transparent 55%),
+        radial-gradient(circle at 70% 25%, rgba(232,193,90,.16), transparent 55%);
+      opacity:.55;
+      transform: rotate(8deg);
+      pointer-events:none;
+    }
+    .spec > *{position:relative}
+    .specTitle{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .specTitle b{
+      font-size: 12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.82);
+    }
+    .tag{
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .10em;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.72);
+      white-space:nowrap;
+    }
+    .specList{
+      display:grid; gap: 10px;
+      margin:0; padding:0; list-style:none;
+    }
+    .specList li{
+      display:flex; justify-content:space-between; gap:12px; align-items:flex-start;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(5,7,10,.35);
+      color: rgba(255,255,255,.74);
+      line-height:1.45;
+      font-size: 14px;
+    }
+    .specList li b{color: rgba(255,255,255,.92)}
+    .specList small{color: rgba(255,255,255,.58); display:block; margin-top:2px; font-size: 12px}
+
+    .section{
+      padding: 26px 0;
+    }
+    .sectionHead{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    .sectionHead h2{
+      margin:0;
+      font-size: 26px;
+      letter-spacing:-.02em;
+    }
+    .sectionHead p{
+      margin:0;
+      color: rgba(255,255,255,.72);
+      max-width: 70ch;
+      line-height:1.55;
+      font-size: 14px;
+    }
+
+    .grid3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .card{
+      border-radius: var(--r2);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      box-shadow: var(--shadow2);
+      padding: 16px;
+      overflow:hidden;
+    }
+    .card h3{
+      margin: 0 0 8px;
+      font-size: 16px;
+      letter-spacing:-.01em;
+    }
+    .card p{
+      margin: 0;
+      color: rgba(255,255,255,.72);
+      line-height:1.55;
+      font-size: 14px;
+    }
+
+    .how{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .step{
+      border-radius: var(--r2);
+      border: 1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(520px 280px at 18% 18%, rgba(49,214,255,.12), transparent 65%),
+        rgba(255,255,255,.03);
+      padding: 16px;
+    }
+    .step .n{
+      font-family: var(--mono);
+      letter-spacing:.14em;
+      font-weight: 900;
+      display:inline-flex; align-items:center; gap: 10px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.78);
+      margin-bottom: 10px;
+    }
+
+    /* Intake */
+    .intakeShell{
+      border-radius: var(--r2);
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(900px 420px at 12% 10%, rgba(49,214,255,.14), transparent 60%),
+        radial-gradient(700px 420px at 92% 20%, rgba(232,193,90,.10), transparent 60%),
+        rgba(255,255,255,.03);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .intakeTop{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap: 14px;
+      padding: 18px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: rgba(5,7,10,.22);
+    }
+    .intakeTop h2{margin:0; font-size: 22px}
+    .intakeTop p{margin:6px 0 0; color: rgba(255,255,255,.72); line-height:1.55; font-size: 14px}
+    .ridPill{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(49,214,255,.40);
+      background: rgba(49,214,255,.12);
+      color: rgba(255,255,255,.90);
+      font-family: var(--mono);
+      letter-spacing: .12em;
+      font-weight: 900;
+      white-space:nowrap;
+    }
+    .formGrid{
+      padding: 18px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .field{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(5,7,10,.30);
+      padding: 12px;
+    }
+    .field.full{grid-column: 1 / -1}
+    .label{
+      display:flex; align-items:baseline; justify-content:space-between;
+      gap: 10px;
+      font-size: 12px;
+      letter-spacing:.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.80);
+      margin-bottom: 8px;
+    }
+    .label em{
+      font-style:normal;
+      color: rgba(255,255,255,.60);
+      letter-spacing: .08em;
+      text-transform:none;
+      font-size: 12px;
+    }
+    input, textarea{
+      width:100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.92);
+      padding: 12px 12px;
+      font-size: 14px;
+      outline:none;
+    }
+    textarea{min-height: 120px; resize: vertical; line-height:1.5}
+    input::placeholder, textarea::placeholder{color: rgba(255,255,255,.42)}
+    input:focus, textarea:focus{border-color: rgba(49,214,255,.55); box-shadow: 0 0 0 5px rgba(49,214,255,.10)}
+    .row{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.78);
+      font-size: 14px;
+      line-height:1.45;
+    }
+    .row span{color: rgba(255,255,255,.62); display:block; margin-top:2px; font-size: 12px}
+    .checks{display:grid; gap:10px; margin-top:10px}
+    .check{
+      display:flex; align-items:flex-start; gap:10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.76);
+      font-size: 14px;
+      line-height:1.45;
+      cursor:pointer;
+      user-select:none;
+    }
+    .check input{width:auto; margin-top:2px}
+    .actions{
+      display:flex; gap:10px; flex-wrap:wrap;
+      padding: 0 18px 18px;
+    }
+    .note{
+      padding: 0 18px 18px;
+      color: rgba(255,255,255,.66);
+      font-size: 13px;
+      line-height:1.6;
+    }
+
+    .toast{
+      display:none;
+      margin: 0 18px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(49,214,255,.35);
+      background: rgba(49,214,255,.10);
+      padding: 14px;
+      color: rgba(255,255,255,.86);
+      box-shadow: var(--shadow2);
+    }
+    .toast strong{color: rgba(255,255,255,.96)}
+    .idrow{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px}
+    .idpill{
+      font-family: var(--mono);
+      letter-spacing:.14em;
+      font-weight: 900;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.96);
+    }
+    .toast code{
+      font-family: var(--mono);
+      font-size: 12px;
+      background: rgba(5,7,10,.35);
+      padding: 3px 6px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .toast.danger{
+      border-color: rgba(255,107,107,.35);
+      background: rgba(255,107,107,.10);
+    }
+
+    /* Upload Kit */
+    .uploadKit{
+      border-radius: var(--r2);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      padding: 18px;
+      box-shadow: var(--shadow2);
+    }
+    .uploadGrid{display:grid; grid-template-columns: 1.1fr .9fr; gap: 12px; margin-top: 12px;}
+    .callout{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(5,7,10,.28);
+      padding: 14px;
+    }
+    .callout h4{
+      margin:0 0 10px;
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.84);
+    }
+    .list{margin:0; padding:0; list-style:none}
+    .list li{
+      display:flex; justify-content:space-between; gap: 10px;
+      padding: 10px 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.74);
+      line-height:1.45;
+      font-size: 14px;
+      margin: 10px 0;
+    }
+    .list li b{color: rgba(255,255,255,.94)}
+    .hint{
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .10em;
+      opacity:.9;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      white-space:nowrap;
+      color: rgba(255,255,255,.72);
+      margin-top: 1px;
+      flex: 0 0 auto;
+    }
+
+    /* FAQ */
+    .faq{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    details{
+      border-radius: var(--r2);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      box-shadow: var(--shadow2);
+      padding: 14px 14px;
+    }
+    summary{
+      cursor:pointer;
+      font-weight: 850;
+      color: rgba(255,255,255,.90);
+      list-style:none;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{
+      margin: 10px 0 0;
+      color: rgba(255,255,255,.72);
+      line-height:1.55;
+      font-size: 14px;
+    }
+
+    footer{
+      padding: 22px 0 34px;
+      color: rgba(255,255,255,.62);
+      font-size: 13px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      margin-top: 22px;
+    }
+    .footGrid{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap: 16px; flex-wrap:wrap;
+    }
+
+    /* Floating orb */
+    .orb{
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 80;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(5,7,10,.60);
+      backdrop-filter: blur(12px);
+      padding: 12px 14px;
+      display:flex; align-items:center; gap: 10px;
+      box-shadow: 0 16px 60px rgba(0,0,0,.45);
+      cursor:pointer;
+      user-select:none;
+      opacity:0;
+      transform: translateY(12px);
+      transition: .22s ease;
+    }
+    .orb.on{opacity:1; transform: translateY(0px)}
+    .orb i{
+      width: 10px; height: 10px; border-radius: 999px;
+      background: rgba(49,214,255,.95);
+      box-shadow: 0 0 0 6px rgba(49,214,255,.14);
+      display:inline-block;
+    }
+    .orb span{
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .14em;
+      color: rgba(255,255,255,.86);
+      font-weight: 900;
+    }
+
+    /* Reveal */
+    .reveal{opacity:0; transform: translateY(10px); transition: .5s ease}
+    .reveal.on{opacity:1; transform: translateY(0px)}
+
+    @media (max-width: 1020px){
+      .heroGrid{grid-template-columns: 1fr}
+      .navLeft, .navCtas{min-width: unset}
+      .grid3{grid-template-columns: 1fr}
+      .how{grid-template-columns: 1fr}
+      .formGrid{grid-template-columns: 1fr}
+      .uploadGrid{grid-template-columns: 1fr}
+      .faq{grid-template-columns: 1fr}
+    }
+    @media (max-width: 560px){
+      .navLinks{display:none}
+      .btn{width:100%}
+      .navCtas{width:100%}
+      .nav{flex-wrap:wrap}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top">
+    <div class="wrap">
+      <div class="nav">
+        <div class="navLeft">
+          <img class="logo" src="vinvoyant_lockup_black.png" alt="VINvoyant" />
+          <span class="pill"><span class="dot" aria-hidden="true"></span> concierge vehicle intelligence</span>
+        </div>
+
+        <div class="navLinks" aria-label="Site sections">
+          <a href="#how">How it works</a>
+          <a href="#services">Services</a>
+          <a href="#start">Start</a>
+          <a href="#upload">Upload Kit</a>
+          <a href="#faq">FAQ</a>
+        </div>
+
+        <div class="navCtas">
+          <a class="btn warm small" id="payTop" href="https://buy.stripe.com/REPLACE_ME" target="_blank" rel="noopener">Pay Now</a>
+          <a class="btn ghost small" href="#start">Begin Intake</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="heroGrid">
+        <div class="hCard hLeft reveal">
+          <div class="kicker"><span class="dot" aria-hidden="true"></span> VIN in. clarity out.</div>
+          <h1>Stop guessing. Start diagnosing—remotely.</h1>
+          <p class="sub">
+            VINvoyant turns your VIN + symptoms + evidence into a ranked plan: likely causes, risk level,
+            next-best tests, and parts options—written like a calm, elite technician is sitting beside you.
+          </p>
+
+          <div class="burst" aria-label="Highlights">
+            <span class="chip"><i aria-hidden="true"></i> Maintenance forecast</span>
+            <span class="chip"><i aria-hidden="true"></i> DTC interpretation</span>
+            <span class="chip"><i aria-hidden="true"></i> Parts pricing map</span>
+            <span class="chip"><i aria-hidden="true"></i> Concierge guidance</span>
+          </div>
+
+          <p class="micro" style="margin-top:14px;">
+            Built by a <b>master‑certified Mercedes/AMG technician</b> who’s allergic to vague advice.
+            This is the “bring receipts” version of car help: screenshots, short video, one clean story—
+            and the plan gets sharp.
+          </p>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 16px;">
+            <a class="btn warm" href="https://buy.stripe.com/REPLACE_ME" target="_blank" rel="noopener" id="payHero">Pay Now <span class="mono">↗</span></a>
+            <a class="btn ghost" href="#start">Begin Intake</a>
+          </div>
+
+          <p class="micro" style="margin-top:10px;">
+            <b>Unique detail:</b> your request gets a ticket number (Request ID). Use it everywhere—folder names, messages, receipts—so nothing gets lost in the fog.
+          </p>
+        </div>
+
+        <aside class="hCard hRight reveal">
+          <div class="spec">
+            <div class="specTitle">
+              <b>What you get</b>
+              <span class="tag">ONE‑PAGE • FAST • PRECISE</span>
+            </div>
+            <ul class="specList">
+              <li><div><b>VIN‑based maintenance map</b><small>Expected intervals + weak points to watch</small></div><span class="hint">CORE</span></li>
+              <li><div><b>Diagnosis blueprint</b><small>Ranked causes + tests that confirm/deny</small></div><span class="hint">CORE</span></li>
+              <li><div><b>Parts pricing</b><small>Dealer + major retail: compare without chaos</small></div><span class="hint">CORE</span></li>
+              <li><div><b>Concierge logistics</b><small>Delivery/next steps guidance (where possible)</small></div><span class="hint">PLUS</span></li>
+            </ul>
+          </div>
+
+          <div class="spec">
+            <div class="specTitle">
+              <b>Built for</b>
+              <span class="tag">OWNERS • DIY • SHOPS</span>
+            </div>
+            <div class="row">
+              <div>
+                <b>Owners</b>
+                <span>Know what’s real before you approve a repair.</span>
+              </div>
+              <div class="tag">CLARITY</div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+              <div>
+                <b>DIY</b>
+                <span>Get a plan that respects tools, time, and sanity.</span>
+              </div>
+              <div class="tag">FLOW</div>
+            </div>
+            <div class="row" style="margin-top:10px;">
+              <div>
+                <b>Shops</b>
+                <span>Second‑set‑of‑eyes triage when time is expensive.</span>
+              </div>
+              <div class="tag">SPEED</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="how">
+      <div class="wrap">
+        <div class="sectionHead reveal">
+          <div><h2>How it works</h2></div>
+          <p>Not “diagnose my car over text.” More like: a disciplined evidence pipeline that turns your chaos into a ranked plan.</p>
+        </div>
+
+        <div class="how">
+          <div class="step reveal">
+            <div class="n">01 • Pay + Claim Ticket</div>
+            <p style="margin:0; color: rgba(255,255,255,.72); line-height:1.55; font-size:14px;">
+              Pay first (Stripe). You get a <b>Request ID</b> on the intake page—your universal tag.
+              Put it in folder names, messages, and receipts. Evidence stays married to the ticket.
+            </p>
+          </div>
+          <div class="step reveal">
+            <div class="n">02 • Submit Intake</div>
+            <p style="margin:0; color: rgba(255,255,255,.72); line-height:1.55; font-size:14px;">
+              VIN + symptoms + what changed recently. If you have codes, include them. If you have screenshots, include them.
+              The goal is a clean narrative—not a novel.
+            </p>
+          </div>
+          <div class="step reveal">
+            <div class="n">03 • Upload Evidence</div>
+            <p style="margin:0; color: rgba(255,255,255,.72); line-height:1.55; font-size:14px;">
+              Scan screenshots, a 20–30s video, a few targeted photos.
+              Remote diagnosis is an evidence game. We play it properly.
+            </p>
+          </div>
+          <div class="step reveal">
+            <div class="n">04 • Get the Plan</div>
+            <p style="margin:0; color: rgba(255,255,255,.72); line-height:1.55; font-size:14px;">
+              You receive a structured response: ranked causes, what to test next, risk level,
+              parts options across major sources, and what each outcome means.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="wrap">
+        <div class="sectionHead reveal">
+          <div><h2>What VINvoyant can do</h2></div>
+          <p>A virtual one‑stop shop: maintenance forecasting, remote diagnosis logic, pricing intel, and concierge-style guidance.</p>
+        </div>
+
+        <div class="grid3">
+          <div class="card reveal">
+            <h3>Maintenance + weak-point forecasting</h3>
+            <p>Given your VIN and current mileage, we map expected intervals, common failure points, and what to pre‑empt before it becomes a “surprise.”</p>
+          </div>
+          <div class="card reveal">
+            <h3>Evidence-based remote triage</h3>
+            <p>Interpret scan results, freeze frames, and symptoms. Then rank likely causes and tell you what single test gives the most truth next.</p>
+          </div>
+          <div class="card reveal">
+            <h3>Parts pricing map</h3>
+            <p>Compare options across common sources (dealer + major retail) so you’re not blindfolded at checkout. We focus on correct fitment and sane choices.</p>
+          </div>
+          <div class="card reveal">
+            <h3>Repair instruction guidance</h3>
+            <p>DIY-friendly steps and risk callouts. What to do, what not to do, and why it matters—without the “mystery torque” energy.</p>
+          </div>
+          <div class="card reveal">
+            <h3>History interpretation</h3>
+            <p>If you have a report (Carfax/AutoCheck) or shop notes, we interpret patterns: repeats, omissions, red flags, and “quiet risks.”</p>
+          </div>
+          <div class="card reveal">
+            <h3>Concierge logistics</h3>
+            <p>When possible: guidance on delivery workflows, parts pickup/delivery services, and “what to ask” scripts for shops and parts counters.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="start">
+      <div class="wrap">
+        <div class="intakeShell reveal">
+          <div class="intakeTop">
+            <div>
+              <h2>Start your VINvoyant ticket</h2>
+              <p>Pay first, then submit. Your Request ID keeps everything stitched together.</p>
+            </div>
+            <div class="ridPill" title="Request ID">RID: <span id="ridTop">VV-0000-00000</span></div>
+          </div>
+
+          <form id="intakeForm" name="vinvoyant_intake" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="vinvoyant_intake" />
+            <p style="display:none;">
+              <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+            </p>
+
+            <input type="hidden" name="source" value="vinvoyant-onepage-ultra" />
+            <input type="hidden" id="request_id" name="request_id" value="" />
+            <input type="hidden" id="vin_valid" name="vin_valid" value="false" />
+            <input type="hidden" id="paid_confirmed" name="paid_confirmed" value="false" />
+            <input type="hidden" id="payment_reference" name="payment_reference" value="" />
+
+            <div class="formGrid">
+              <div class="field">
+                <div class="label">Payment <em>pay first, then submit</em></div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                  <a class="btn warm" id="payBtn" href="https://buy.stripe.com/REPLACE_ME" target="_blank" rel="noopener" style="flex:1;">Pay Now</a>
+                  <button class="btn ghost" id="paidBtn" type="button" style="flex:1;">I Paid (Continue)</button>
+                </div>
+                <div class="micro" style="margin-top:10px;">
+                  Tip: keep your receipt. If asked, paste the receipt/reference below.
+                </div>
+                <input id="payRefInput" name="pay_ref_optional" type="text" placeholder="Optional: payment receipt/reference (for matching)" style="margin-top:10px;" />
+              </div>
+
+              <div class="field">
+                <div class="label">Your info <em>so we can reply</em></div>
+                <input name="name" type="text" placeholder="Name" required />
+                <div style="height:10px"></div>
+                <input name="email" type="email" placeholder="Email" required />
+              </div>
+
+              <div class="field">
+                <div class="label">VIN <em>17 characters</em> <span class="mono" id="vinCount">0/17</span></div>
+                <input id="vinInput" name="vin" type="text" placeholder="Enter VIN" maxlength="17" required />
+                <div class="micro" style="margin-top:10px;">
+                  Status: <span class="mono" id="vinStatus">Waiting</span> • Mode: <span class="mono" id="vinMeta">READY</span>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="label">Goal <em>what does “fixed” mean to you?</em></div>
+                <input name="goal" type="text" placeholder="Example: eliminate misfire under load / stop coolant loss / resolve warning light" required />
+              </div>
+
+              <div class="field full">
+                <div class="label">Symptoms <em>tell the story without the novel</em></div>
+                <textarea name="symptoms" placeholder="What happens, when it happens, and what changed recently. Include mileage, temperature, and patterns." required></textarea>
+              </div>
+
+              <div class="field full">
+                <div class="label">DTC Codes <em>optional but powerful</em></div>
+                <input name="dtc_codes" type="text" placeholder="Example: P0302, P0171, U0100 (or paste text)" />
+              </div>
+
+              <div class="field full">
+                <div class="label">Evidence Links <em>share link: iCloud/Drive/Dropbox/OneDrive</em></div>
+                <input id="evidenceLinks" name="evidence_links" type="text" placeholder="Paste share link here (read-only preferred)" />
+                <div class="micro" style="margin-top:10px;">
+                  Use folder name <span class="mono" id="ridFolder">VV-0000-00000</span> so your evidence stays matched.
+                </div>
+              </div>
+
+              <div class="field full">
+                <div class="label">Deliverables <em>choose what you want back</em></div>
+                <div class="checks">
+                  <label class="check"><input type="checkbox" name="deliverables" value="Maintenance Forecast" checked /> <div><b>Maintenance Forecast</b><span>Expected service map + common weak points.</span></div></label>
+                  <label class="check"><input type="checkbox" name="deliverables" value="Diagnosis Blueprint" checked /> <div><b>Diagnosis Blueprint</b><span>Ranked causes + next-best tests + what outcomes mean.</span></div></label>
+                  <label class="check"><input type="checkbox" name="deliverables" value="Parts Pricing Map" checked /> <div><b>Parts Pricing Map</b><span>Dealer vs retail options with fitment sanity.</span></div></label>
+                  <label class="check"><input type="checkbox" name="deliverables" value="Repair Guidance" /> <div><b>Repair Guidance</b><span>DIY-friendly steps + risk callouts.</span></div></label>
+                  <label class="check"><input type="checkbox" name="deliverables" value="Concierge Follow-up" /> <div><b>Concierge Follow‑up</b><span>Ask‑scripts + logistics advice for your next move.</span></div></label>
+                </div>
+              </div>
+            </div>
+
+            <div class="toast" id="toast">
+              <strong>Request received.</strong> Your Request ID is below. Keep it — it’s your ticket number.
+              <div class="idrow">
+                <span class="idpill" id="rid">VV-0000-00000</span>
+                <button class="btn ghost small" id="copyRid" type="button" style="min-width:140px;">Copy ID</button>
+                <a class="btn small" href="#upload" id="goUpload" style="min-width:160px;">Upload Kit</a>
+              </div>
+              <div style="margin-top:8px; opacity:.9;">
+                Put <code id="ridCode">VV-0000-00000</code> in your upload folder name (or message) so everything stays matched.
+              </div>
+            </div>
+
+            <div class="toast danger" id="toastError">
+              <strong>Hold up.</strong> Fix the issue and try again.
+            </div>
+
+            <div class="actions">
+              <button class="btn" id="submitBtn" type="submit">Submit Request</button>
+              <button class="btn ghost" id="resetBtn" type="button">Reset</button>
+              <a class="btn ghost" href="#upload">What to upload</a>
+            </div>
+
+            <div class="note">
+              This intake uses Netlify Forms (or any HTML-formC^H^H^H^HCRM you wire later). Payments are handled by Stripe.
+              If you want true payment verification before submission, upgrade to the Functions version.
+              For now: pay first, then submit—keep your receipt and your Request ID.
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="upload">
+      <div class="wrap">
+        <div class="sectionHead reveal">
+          <div><h2>Upload Kit</h2></div>
+          <p>Remote diagnosis lives or dies on evidence. This kit tells you exactly what to capture so the plan stays sharp.</p>
+        </div>
+
+        <div class="uploadKit reveal">
+          <div style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+            <div>
+              <div class="pill" style="margin-bottom:10px;"><span class="dot" aria-hidden="true"></span> evidence that turns guesswork into certainty</div>
+              <div style="font-family: var(--mono); letter-spacing:.12em; color: rgba(255,255,255,.72); font-size: 12px;">
+                USE RID: <span id="ridTop2">VV-0000-00000</span>
+              </div>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn ghost small" id="focusEvidence" type="button">Focus Evidence Field</button>
+              <button class="btn ghost small" id="copyRid2" type="button">Copy Request ID</button>
+            </div>
+          </div>
+
+          <div class="uploadGrid">
+            <div class="callout">
+              <h4>What to capture (ranked)</h4>
+              <ul class="list" aria-label="Evidence list">
+                <li><span><b>Scan screenshots</b><br/><span style="opacity:.85">Codes + freeze frame + live data snapshot if possible</span></span><span class="hint">HIGH</span></li>
+                <li><span><b>20–30s video</b><br/><span style="opacity:.85">Cold start / symptom moment / cluster warning lights</span></span><span class="hint">HIGH</span></li>
+                <li><span><b>Photos</b><br/><span style="opacity:.85">Leaks, broken connectors, worn belts, fluid evidence</span></span><span class="hint">MED</span></li>
+                <li><span><b>Recent work</b><br/><span style="opacity:.85">What changed: parts replaced, battery, jumps, tire size, etc.</span></span><span class="hint">MED</span></li>
+                <li><span><b>History report</b><br/><span style="opacity:.85">Carfax/AutoCheck PDF or screenshots (if you have it)</span></span><span class="hint">NICE</span></li>
+              </ul>
+              <div class="micro">Pro move: name your folder <span class="mono" id="ridFolder2">VV-0000-00000</span>.</div>
+            </div>
+
+            <div class="callout">
+              <h4>How to send it</h4>
+              <p class="micro" style="margin-top:0;">
+                Create a share link from whatever you already use (iCloud/Google Drive/Dropbox/OneDrive) and paste it in the intake form’s “Evidence Links”.
+              </p>
+              <div class="row" style="margin: 12px 0;">
+                <div>
+                  <b>Read-only share links</b>
+                  <span>You stay in control. We just read the evidence.</span>
+                </div>
+                <div class="tag">SAFE</div>
+              </div>
+              <p class="micro" style="margin:0;">
+                If you can’t share a link, send attachments in a reply and include your Request ID in the message subject/body.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="wrap">
+        <div class="sectionHead reveal">
+          <div><h2>FAQ</h2></div>
+          <p>Clear answers. No mysticism. No “replace the ECU and pray.”</p>
+        </div>
+
+        <div class="faq">
+          <details class="reveal">
+            <summary>Can you “diagnose” without seeing the car?</summary>
+            <p>We can’t touch your car, but we can do what good techs do: build a hypothesis tree and destroy the wrong branches with evidence. The better the evidence, the fewer wasted parts and guesses.</p>
+          </details>
+
+          <details class="reveal">
+            <summary>Is VINvoyant only for Mercedes/AMG?</summary>
+            <p>It’s built from a Mercedes/AMG brain, but the method is universal. VIN-based maintenance logic, evidence triage, and parts sanity checks work across platforms.</p>
+          </details>
+
+          <details class="reveal">
+            <summary>Do you buy parts for me or deliver them?</summary>
+            <p>VINvoyant focuses on guidance and pricing intelligence. In some cases, we can help you plan logistics (pickup/delivery services), but availability depends on your area and providers.</p>
+          </details>
+
+          <details class="reveal">
+            <summary>What’s the fastest way to get a great answer?</summary>
+            <p>Send scan screenshots (codes + freeze frame), a 20–30s video of the symptom, and tell us what changed recently. That combo turns fog into structure.</p>
+          </details>
+
+          <details class="reveal">
+            <summary>What if I don’t have a scan tool?</summary>
+            <p>Still submit. Describe symptoms precisely and upload photos/video. We’ll tell you the highest-value next test (often cheap) and what to ask for if you visit a shop.</p>
+          </details>
+
+          <details class="reveal">
+            <summary>Is payment verified before submission?</summary>
+            <p>This single-page version uses Stripe for payment and Netlify for intake. If you want true payment verification (server-confirmed), switch to the Functions build. Same vibe—stronger gate.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <div class="footGrid">
+          <div>
+            <img src="vinvoyant_lockup_black.png" alt="VINvoyant" class="logo" style="height:24px; filter: invert(1); opacity:.92" />
+            <div style="margin-top:10px; max-width: 70ch;">
+              VINvoyant is a concierge intelligence layer for vehicle owners: structured, evidence‑based guidance that respects your time, your wallet, and physics.
+            </div>
+          </div>
+          <div>
+            <div class="pill"><span class="dot" aria-hidden="true"></span> keep the Request ID</div>
+            <div style="margin-top:10px; color: rgba(255,255,255,.62); line-height:1.55;">
+              © <span id="yr"></span> VINvoyant • Built for clarity • <span class="mono">RID:</span> <span class="mono" id="ridFoot">VV-0000-00000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <div class="orb" id="orb" data-mode="start" title="Jump">
+    <i aria-hidden="true"></i>
+    <span>START</span>
+  </div>
+
+  <script>
+    // ===== VINvoyant ULTRA (single-page, real deploy-ready) =====
+    // Replace the Stripe payment link in HTML:
+    //   https://buy.stripe.com/REPLACE_ME
+    // with your real Payment Link.
+
+    const $ = (id) => document.getElementById(id);
+    const normalizeVIN = (v) => (v || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+    const isValidLength = (v) => v.length === 17;
+
+    function newRequestId(){
+      const y = new Date().getFullYear();
+      const n = Math.floor(10000 + Math.random()*90000);
+      return `VV-${y}-${n}`;
+    }
+
+    function setRid(rid){
+      const fields = ["request_id"];
+      fields.forEach(k => { const el = $(k); if(el) el.value = rid; });
+
+      const textEls = ["ridMini","rid","ridCode","ridTop","ridTop2","ridFolder","ridFolder2","ridFoot"];
+      textEls.forEach(k => { const el = $(k); if(el) el.textContent = rid; });
+
+      localStorage.setItem("vinvoyant_last_rid", rid);
+    }
+
+    function getOrMakeRid(){
+      const existing = localStorage.getItem("vinvoyant_last_rid");
+      if(existing && /^VV-\d{4}-\d{5}$/.test(existing)) return existing;
+      return newRequestId();
+    }
+
+    // Wire payment links in multiple places
+    function syncPayLinks(){
+      const link = document.getElementById("payBtn")?.getAttribute("href") || "https://buy.stripe.com/REPLACE_ME";
+      ["payTop","payHero"].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.href = link;
+      });
+    }
+
+    // VIN UI
+    const vinInput = $("vinInput");
+    const vinStatus = $("vinStatus");
+    const vinMeta = $("vinMeta");
+    const vinCount = $("vinCount");
+    const vinValidField = $("vin_valid");
+
+    function updateVIN(){
+      const v = normalizeVIN(vinInput.value);
+      if(vinInput.value !== v) vinInput.value = v;
+      vinCount.textContent = v.length + "/17";
+
+      if(v.length === 0){
+        vinStatus.textContent = "Waiting";
+        vinStatus.className = "mono";
+        vinMeta.textContent = "READY";
+        vinValidField.value = "false";
+        return;
+      }
+      if(v.length < 17){
+        vinStatus.textContent = v.length + "/17";
+        vinStatus.className = "mono";
+        vinMeta.textContent = "CAPTURING";
+        vinValidField.value = "false";
+        return;
+      }
+      if(isValidLength(v)){
+        vinStatus.textContent = "OK";
+        vinStatus.className = "mono";
+        vinMeta.textContent = "LOCKED";
+        vinValidField.value = "true";
+      }
+    }
+    vinInput.addEventListener("input", updateVIN);
+
+    // Payment UX
+    const paidBtn = $("paidBtn");
+    const payRefInput = $("payRefInput");
+    const paidConfirmed = $("paid_confirmed");
+    const paymentReference = $("payment_reference");
+
+    paidBtn.addEventListener("click", ()=>{
+      paidConfirmed.value = "true";
+      const ref = (payRefInput.value || "").trim();
+      paymentReference.value = ref;
+      document.getElementById("start").scrollIntoView({behavior:"smooth", block:"start"});
+      setTimeout(()=> vinInput.focus(), 520);
+    });
+
+    // Netlify Forms AJAX submit (keeps it one-page)
+    const form = $("intakeForm");
+    const toast = $("toast");
+    const toastError = $("toastError");
+    const submitBtn = $("submitBtn");
+    const resetBtn = $("resetBtn");
+
+    function showToast(){
+      toast.style.display = "block";
+      toastError.style.display = "none";
+      toast.scrollIntoView({behavior:"smooth", block:"nearest"});
+    }
+    function showError(msg){
+      toastError.style.display = "block";
+      toast.style.display = "none";
+      toastError.innerHTML = `<strong>Hold up.</strong> ${msg}`;
+      toastError.scrollIntoView({behavior:"smooth", block:"nearest"});
+    }
+
+    function encode(formData){
+      const params = new URLSearchParams();
+      for (const [k, v] of formData.entries()){
+        params.append(k, v);
+      }
+      return params.toString();
+    }
+
+    async function handleSubmit(e){
+      e.preventDefault();
+
+      // Require real payment link to be set (owner setup)
+      const payHref = document.getElementById("payBtn")?.getAttribute("href") || "";
+      if(payHref.includes("REPLACE_ME")){
+        showError('Owner setup required: replace the Stripe Payment Link URL (Pay Now).');
+        return;
+      }
+
+      const vin = normalizeVIN(vinInput.value);
+      if(!isValidLength(vin)){
+        vinInput.focus();
+        showError("VIN must be exactly 17 characters.");
+        return;
+      }
+
+      // Ensure RID exists
+      const rid = $("request_id").value || getOrMakeRid();
+      setRid(rid);
+
+      submitBtn.textContent = "Sending…";
+      submitBtn.disabled = true;
+
+      try{
+        const data = new FormData(form);
+        const res = await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: encode(data)
+        });
+
+        if(res.ok){
+          showToast();
+          setOrbMode("upload");
+        }else{
+          showError("Submission rejected. If you’re testing locally, deploy to Netlify (Forms only works on deployed site).");
+        }
+      }catch(err){
+        showError("Network error. Deploy to Netlify to enable Forms and try again.");
+      }finally{
+        submitBtn.textContent = "Submit Request";
+        submitBtn.disabled = false;
+      }
+    }
+    form.addEventListener("submit", handleSubmit);
+
+    resetBtn.addEventListener("click", ()=>{
+      form.reset();
+      toast.style.display = "none";
+      toastError.style.display = "none";
+      paidConfirmed.value = "false";
+      paymentReference.value = "";
+      setRid(newRequestId());
+      updateVIN();
+      setOrbMode("start");
+      vinInput.focus();
+    });
+
+    // Copy RID
+    async function copyRid(){
+      const rid = $("request_id").value || getOrMakeRid();
+      try{
+        await navigator.clipboard.writeText(rid);
+      }catch(e){
+        const ta = document.createElement("textarea");
+        ta.value = rid;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+      }
+    }
+    $("copyRid")?.addEventListener("click", copyRid);
+    $("copyRid2")?.addEventListener("click", copyRid);
+
+    // Upload helpers
+    const evidenceLinks = $("evidenceLinks");
+    $("focusEvidence")?.addEventListener("click", ()=>{
+      document.getElementById("start").scrollIntoView({behavior:"smooth", block:"start"});
+      setTimeout(()=> evidenceLinks?.focus(), 520);
+    });
+
+    // Reveal on scroll
+    const els = Array.from(document.querySelectorAll(".reveal"));
+    const io = new IntersectionObserver((entries)=>{
+      for(const ent of entries){
+        if(ent.isIntersecting){
+          ent.target.classList.add("on");
+          io.unobserve(ent.target);
+        }
+      }
+    }, {threshold: 0.12});
+    els.forEach(el => io.observe(el));
+
+    // Floating orb
+    const orb = $("orb");
+    const startEl = document.getElementById("start");
+    const uploadEl = document.getElementById("upload");
+
+    function setOrbMode(mode){
+      orb.dataset.mode = mode;
+      const label = orb.querySelector("span");
+      label.textContent = (mode === "upload") ? "UPLOAD" : "START";
+    }
+
+    function onScroll(){
+      const y = window.scrollY || 0;
+      if(y > 260) orb.classList.add("on");
+      else orb.classList.remove("on");
+    }
+    window.addEventListener("scroll", onScroll, {passive:true});
+
+    orb.addEventListener("click", ()=>{
+      const mode = orb.dataset.mode || "start";
+      if(mode === "upload"){
+        uploadEl.scrollIntoView({behavior:"smooth", block:"start"});
+      }else{
+        startEl.scrollIntoView({behavior:"smooth", block:"start"});
+        setTimeout(()=> vinInput.focus(), 520);
+      }
+    });
+
+    // Init
+    document.getElementById("yr").textContent = new Date().getFullYear();
+    const rid0 = getOrMakeRid();
+    setRid(rid0);
+    updateVIN();
+    onScroll();
+    syncPayLinks();
+    setOrbMode("start");
+  </script>
+</body>
+</html>
