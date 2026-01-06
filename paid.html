@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Verifying payment…</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:#0b0f17; color:#e8ecf3; }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 56px 18px; }
+    .card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 16px; padding: 22px; }
+    .muted { color: rgba(232,236,243,.72); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    a { color: #9bd1ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .btn { display:inline-block; margin-top: 14px; padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.08); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1 style="margin:0 0 10px;">Verifying payment…</h1>
+      <p class="muted" id="msg">Please wait.</p>
+      <div class="muted" style="margin-top:10px;">
+        Session: <span class="mono" id="sid">—</span>
+      </div>
+      <a class="btn" id="back" href="/#start">Back to VINvoyant</a>
+    </div>
+  </div>
+  <script>
+    (function(){
+      const qs = new URLSearchParams(location.search);
+      const sessionId = (qs.get("session_id") || "").trim();
+      const rid = (qs.get("rid") || "").trim();
+
+      const sidEl = document.getElementById("sid");
+      const msgEl = document.getElementById("msg");
+      if (sidEl) sidEl.textContent = sessionId || "missing";
+
+      if (!sessionId){
+        msgEl.textContent = "Missing session id. Return to the intake page and click “Verify Payment”.";
+        return;
+      }
+
+      try { localStorage.setItem("vinvoyant_paid_session", sessionId); } catch {}
+
+      fetch(`/.netlify/functions/verify-session?session_id=${encodeURIComponent(sessionId)}`)
+        .then(r => r.json().then(j => ({ ok: r.ok, status: r.status, j })))
+        .then(({ ok, j }) => {
+          if (ok && j && j.paid){
+            try { localStorage.setItem("vinvoyant_paid_session", j.session_id || sessionId); } catch {}
+            msgEl.textContent = "Payment confirmed. Returning to the intake…";
+            const toRid = encodeURIComponent(rid || j.rid || "");
+            location.replace(`/#start?paid=1${toRid ? `&rid=${toRid}` : ""}`);
+          } else {
+            msgEl.textContent = (j && j.error) ? j.error : "Payment not confirmed yet. Wait a moment and refresh this page, or click “Verify Payment” on the intake.";
+          }
+        })
+        .catch(() => {
+          msgEl.textContent = "Could not reach the verification service. Return to the intake page and click “Verify Payment”.";
+        });
+    })();
+  </script>
+</body>
+</html>
+
