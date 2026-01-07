@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VINvoyant - Experience</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .oracle-container, .diagnostic-engine, .evidence-upload, .pricing-tiers, .vehicle-dashboard, .technician-overlay, .notifications, .emotional-layer {
+            padding: 40px;
+            background-color: rgba(0, 0, 0, 0.9);
+            border-radius: 10px;
+            color: #fff;
+            max-width: 900px;
+            margin: 20px auto;
+            text-align: left;
+        }
+
+        h1, h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .vin-input-wrapper, .conversation-panel, .technician-input, .pricing-tiers, .evidence-upload, .notifications, .emotional-layer {
+            text-align: center;
+        }
+
+        input[type="text"], textarea {
+            padding: 10px;
+            font-size: 1.2rem;
+            width: 80%;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .timeline, .confidence-meter, .insight-log, .machine-hypothesis {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .notification-list li {
+            background-color: rgba(255, 255, 255, 0.1);
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .emotional-layer p {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Vehicle Oracle Landing -->
+    <div class="oracle-container">
+        <h1>Enter Your VIN</h1>
+        <div class="vin-input-wrapper">
+            <input type="text" id="vin-input" placeholder="Enter VIN here">
+            <button id="submit-vin">Submit</button>
+        </div>
+        <div id="vehicle-profile" class="hidden"></div>
+    </div>
+
+    <!-- Diagnostic Consciousness Engine -->
+    <div class="diagnostic-engine hidden">
+        <div class="vehicle-profile-summary"></div>
+        <div class="conversation-panel">
+            <p class="prompt">What feels wrong with your vehicle?</p>
+            <input type="text" id="symptom-input" placeholder="Describe the issue...">
+            <button id="next-step">Next</button>
+        </div>
+    </div>
+
+    <!-- Evidence Upload - Sensory Cortex -->
+    <div class="evidence-upload hidden">
+        <p>Show me what your vehicle is showing you:</p>
+        <input type="file" id="evidence-input" accept="image/*,video/*">
+        <button id="upload-evidence">Upload</button>
+        <div id="evidence-preview" class="hidden"></div>
+    </div>
+
+    <!-- Pricing & Tiers - Cognitive Power Levels -->
+    <div class="pricing-tiers hidden">
+        </div>
+</body>
+</html>
