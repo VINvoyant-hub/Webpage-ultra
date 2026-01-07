@@ -1,4 +1,9 @@
 [build]
-  publish = "."
+  publish = "public"
   functions = "netlify/functions"
 
+[[plugins]]
+  package = "netlify-plugin-cloudinary"
+  [plugins.inputs]
+    cloudName = "demo"
+    imagesPath = "assets"

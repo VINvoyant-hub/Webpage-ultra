@@ -1,0 +1,187 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VINvoyant — Technician Dashboard</title>
+  <style>
+    :root{
+      --bg:#0B0F14;
+      --bg2:#070A0F;
+      --card:#0F1622;
+      --ink:#D7DCE2;
+      --muted:rgba(215,220,226,.72);
+      --faint:rgba(215,220,226,.18);
+      --accent:#31D6FF;
+      --warn:#FFDC78;
+
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius:22px;
+      --radius2:28px;
+      --max:1160px;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+    }
+
+    .wrap{max-width: var(--max); margin:0 auto; padding:20px}
+    h1, h2, h3{margin:0 0 10px}
+    
+    .card{
+      border-radius: var(--radius2);
+      background: rgba(17,27,42,.88);
+      border: 1px solid rgba(215,220,226,.14);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    label{display:block; margin:10px 0 5px; color:rgba(215,220,226,.7); text-transform:uppercase; font-size:12px; letter-spacing:.1em;}
+    input, textarea, select{
+      width:100%;
+      padding: 12px;
+      border-radius: 8px;
+      background: rgba(0,0,0,.3);
+      border: 1px solid rgba(255,255,255,.1);
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+    }
+    textarea{resize:vertical; min-height:80px}
+    
+    .grid2{display:grid; grid-template-columns: 1fr 1fr; gap:20px}
+    .btn{
+      display:inline-block; padding:12px 24px; background:var(--accent); color:#000; font-weight:bold; 
+      border-radius:8px; border:none; cursor:pointer; text-decoration:none;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Technician Dashboard</h1>
+    <p>Fill out the deliverables based on the customer intake.</p>
+
+    <div class="card">
+      <h2>Context</h2>
+      <div class="grid2">
+        <div>
+          <label>Request ID</label>
+          <input type="text" placeholder="VV-202X-XXXXX">
+        </div>
+        <div>
+          <label>Customer Name</label>
+          <input type="text">
+        </div>
+      </div>
+      <div class="grid2" style="margin-top:14px;">
+        <div>
+          <label>VIN</label>
+          <input type="text" readonly="">
+        </div>
+        <div>
+          <label>Email</label>
+          <input type="text" readonly="">
+        </div>
+      </div>
+      <div class="grid2" style="margin-top:14px;">
+        <div>
+          <label>Goal</label>
+          <input type="text" readonly="">
+        </div>
+        <div>
+          <label>Service / Tier</label>
+          <input type="text" readonly="">
+        </div>
+      </div>
+      <div style="margin-top:14px;">
+        <label>Symptoms / Context</label>
+        <textarea readonly="" style="min-height:100px; color:rgba(255,220,120,.9);"></textarea>
+      </div>
+      <div class="grid2" style="margin-top:14px;">
+        <div>
+          <label>DTC Codes</label>
+          <input type="text" readonly="">
+        </div>
+        <div>
+          <label>Evidence Links</label>
+          <input type="text" readonly="">
+        </div>
+      </div>
+    </div>
+
+    <form>
+      <div class="card">
+        <h2>1. Summary (The "One-Pager")</h2>
+        <label>Primary Risk (Headline)</label>
+        <input type="text" placeholder="e.g. Misfire + lean condition likely under load...">
+        
+        <label>Risk Tag</label>
+        <select>
+          <option>RISK: HIGH</option>
+          <option>RISK: MED</option>
+          <option>RISK: LOW</option>
+        </select>
+
+        <label>Next Best Action</label>
+        <textarea placeholder="e.g. Verify fuel trims + misfire counter..."></textarea>
+        
+        <label>Confidence Score (0.0 - 1.0)</label>
+        <input type="text" placeholder="e.g. 0.74">
+
+        <label>Money-Smart Move</label>
+        <textarea placeholder="e.g. Test before buying parts..."></textarea>
+      </div>
+
+      <div class="card">
+        <h2>2. Forecast (Maintenance)</h2>
+        <label>Immediate Actions</label>
+        <textarea placeholder="List immediate items..."></textarea>
+        
+        <label>Near Term (30-60d)</label>
+        <textarea placeholder="List near term items..."></textarea>
+        
+        <label>Long Term</label>
+        <textarea placeholder="List long term items..."></textarea>
+      </div>
+
+      <div class="card">
+        <h2>3. Triage (Diagnosis)</h2>
+        <label>Most Likely Causes (Top 5)</label>
+        <textarea placeholder="Comma separated list..."></textarea>
+        
+        <label>Test Path (Ordered)</label>
+        <textarea placeholder="1) ... 2) ..."></textarea>
+        
+        <label>What to Ignore (Noise)</label>
+        <textarea placeholder="What doesn't matter..."></textarea>
+      </div>
+
+      <div class="card">
+        <h2>4. Parts Blueprint</h2>
+        <label>Part List (Item | Why | Price Range)</label>
+        <textarea placeholder="Coil | Swap test | $45-$140" style="min-height:150px; font-family:monospace;"></textarea>
+      </div>
+
+      <div class="card">
+        <h2>5. Guide / Notes</h2>
+        <label>Technician Notes / Torque Specs</label>
+        <textarea style="min-height:200px;"></textarea>
+      </div>
+
+      <div class="card">
+        <h2>6. Dispatch (Sourcing + Coordination)</h2>
+        <label>Dispatch Notes / Sourcing Details</label>
+        <textarea style="min-height:150px;"></textarea>
+      </div>
+
+      <button class="btn">Generate Report</button>
+    </form>
+  </div>
+
+</body></html>

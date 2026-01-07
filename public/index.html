@@ -1,17 +1,15 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0B0F14" />
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B0F14">
   <title>VINvoyant — Concierge Vehicle Intelligence</title>
-  <meta name="description" content="VIN-based maintenance forecasting, remote diagnostics, parts pricing + dispatch, and torque-spec repair guidance — delivered with concierge clarity." />
+  <meta name="description" content="VIN-based maintenance forecasting, remote diagnostics, parts pricing + dispatch, and torque-spec repair guidance — delivered with concierge clarity.">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="VINvoyant — Concierge Vehicle Intelligence" />
-  <meta property="og:description" content="See the car’s future. Price the present. Execute with confidence." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/vinvoyant-lockup.png" />
+  <meta property="og:title" content="VINvoyant — Concierge Vehicle Intelligence">
+  <meta property="og:description" content="See the car’s future. Price the present. Execute with confidence.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/EDrop_1767710018955.png">
 
   <style>
     :root{
@@ -27,7 +25,7 @@
       --shadow: 0 18px 60px rgba(0,0,0,.55);
       --radius:22px;
       --radius2:28px;
-      --max:1160px;
+      --max:1280px;
 
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
@@ -530,7 +528,7 @@
       font-size: 15px;
     }
 
-    .grid3{display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px;}
+    .grid3{display:grid; grid-template-columns: repeat(3, 1fr); gap: 8px;}
     .mini{
       border-radius: var(--radius);
       border: 1px solid rgba(215,220,226,.12);
@@ -809,7 +807,13 @@
       color: inherit;
       text-decoration:none;
       transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      /* Override .mini styles for smaller appearance */
+      padding: 10px !important;
+      min-height: auto !important;
     }
+    .jumpCard .miniIn h3 { font-size: 14px; margin-bottom: 4px; }
+    .jumpCard .miniIn p { font-size: 12px; line-height: 1.4; }
+
     .jumpCard:hover{
       transform: translateY(-2px);
       border-color: rgba(49,214,255,.26);
@@ -923,7 +927,7 @@
   <div class="texture" aria-hidden="true"></div>
   <div class="splash" id="logoSplash" aria-hidden="true">
     <div class="splashInner">
-      <img src="assets/vinvoyant-lockup.png" alt="VINvoyant" />
+      <img src="assets/EDrop_1767710018955.png%3F_a%3DBBFAAAAA0" alt="VINvoyant" loading="lazy">
     </div>
   </div>
 
@@ -931,7 +935,7 @@
     <div class="wrap">
       <div class="nav">
         <a class="brand" href="#top" aria-label="VINvoyant Home">
-          <img class="brandLogo" src="assets/vinvoyant-lockup.png" alt="VINvoyant" />
+          <img class="brandLogo" src="assets/EDrop_1767710018955.png%3F_a%3DBBFAAAAA0" alt="VINvoyant" loading="lazy">
         </a>
         <nav class="navlinks" aria-label="Primary">
           <a href="#how">How it works</a>
@@ -940,7 +944,6 @@
           <a href="#deliverables">Deliverables</a>
           <a href="#pricing">Access</a>
           <a href="#inperson">In‑person</a>
-          <a href="#faq">FAQ</a>
         </nav>
         <a class="cta" href="#start" role="button">
           Start a Request <small>→</small>
@@ -953,12 +956,32 @@
     <!-- HERO -->
     <section class="hero">
       <div class="wrap">
-        <div class="heroGrid">
-          <aside class="card reveal" id="start">
+        <div class="headline reveal" style="text-align:center; max-width:800px; margin:0 auto 40px;">
+          <div class="kicker" style="justify-content:center;"><span class="dot" aria-hidden="true"></span> concierge vehicle intelligence</div>
+          <h1>See the car’s future.<br>Price the present.</h1>
+          <p class="sub" style="margin-left:auto; margin-right:auto;">
+            VINvoyant turns a VIN + your symptoms into a clean plan: maintenance forecast, diagnosis triage,
+            parts pricing + dispatch, and torque‑spec repair guidance — delivered with concierge clarity.
+          </p>
+          <div class="actions reveal" style="margin-top: 14px; justify-content:center;">
+            <a class="btn danger" href="#start" role="button">Start a Request</a>
+            <a class="btn ghost" href="#pricing" role="button">Access pricing</a>
+            <a class="btn ghost" href="#how" role="button">How it works</a>
+          </div>
+          <div class="pillRow" style="justify-content:center;">
+            <div class="pill"><strong>VIN-Based</strong> forecast</div>
+            <div class="pill"><strong>Remote</strong> diagnosis triage</div>
+            <div class="pill"><strong>Parts</strong> pricing + dispatch</div>
+            <div class="pill"><strong>Repair</strong> instructions + interpretation</div>
+          </div>
+        </div>
+
+        <div class="heroGrid" style="display:flex; justify-content:center;">
+          <aside class="card reveal" id="start" style="max-width:600px; width:100%;">
             <div class="cardIn">
-	              <div class="seal" aria-hidden="true">
-	                <img src="assets/vinvoyant-seal.svg" alt="VINvoyant Verified Report Seal" />
-	              </div>
+              <div class="seal" aria-hidden="true" style="margin-bottom:10px;">
+                 <img src="assets/EDrop_1767710018955.png" alt="VINvoyant Logo" loading="lazy" style="max-height:80px; width:auto;">
+              </div>
 
               <div class="panelTitle">
                 <h2>VINvoyant Intake</h2>
@@ -973,9 +996,9 @@
               -->
               <form id="intakeForm" name="vinvoyant_intake" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success.html">
                 <!-- Netlify Forms -->
-                <input type="hidden" name="form-name" value="vinvoyant_intake" />
+                <input type="hidden" name="form-name" value="vinvoyant_intake">
                 <p style="display:none;">
-                  <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+                  <label>Don’t fill this out if you’re human: <input name="bot-field"></label>
                 </p>
 
 	                <div class="vinBox">
@@ -983,23 +1006,23 @@
 	                  <div class="grid2">
 	                    <div class="field">
 	                      <div class="label">Name</div>
-	                      <input name="name" type="text" placeholder="Your name" required />
+	                      <input name="name" type="text" placeholder="Your name" required="">
 	                    </div>
                     <div class="field">
                       <div class="label">Email</div>
-                      <input name="email" type="email" placeholder="you@email.com" required />
+                      <input name="email" type="email" placeholder="you@email.com" required="">
                     </div>
                   </div>
 
                   <div class="grid2">
                     <div class="field">
                       <div class="label">VIN <em id="vinCount">0/17</em></div>
-                      <input id="vinInput" name="vin" class="mono" type="text" maxlength="17" placeholder="WDDUG8DBXLA..." autocomplete="off" spellcheck="false" required />
+                      <input id="vinInput" name="vin" class="mono" type="text" maxlength="17" placeholder="WDDUG8DBXLA..." autocomplete="off" spellcheck="false" required="">
                     </div>
                     <div class="field">
                       <div class="label">Goal</div>
-                      <select name="goal" required>
-                        <option value="" selected disabled>Choose the mission</option>
+                      <select name="goal" required="">
+                        <option value="" selected="" disabled="">Choose the mission</option>
                         <option>Maintenance Forecast</option>
                         <option>Diagnosis / Warning Light</option>
                         <option>Pre‑Purchase / Used Car Review</option>
@@ -1014,8 +1037,8 @@
                   <div class="grid2">
                     <div class="field">
                       <div class="label">Service</div>
-                      <select id="serviceLevel" name="service_level" required>
-                        <option value="" selected disabled>Select service</option>
+                      <select id="serviceLevel" name="service_level" required="">
+                        <option value="" selected="" disabled="">Select service</option>
                         <option value="brief_remote">VINvoyant Brief (Remote)</option>
                         <option value="command_remote">VINvoyant Command (Remote)</option>
                         <option value="verify_ppi_inperson">VINvoyant Verify (Mobile PPI)</option>
@@ -1024,8 +1047,8 @@
                     </div>
                     <div class="field">
                       <div class="label">Vehicle Tier</div>
-                      <select id="vehicleTier" name="vehicle_tier" required>
-                        <option value="" selected disabled>Select tier</option>
+                      <select id="vehicleTier" name="vehicle_tier" required="">
+                        <option value="" selected="" disabled="">Select tier</option>
                         <option value="tier_a">Tier A — Import/Domestic (most Japanese + Domestic)</option>
                         <option value="tier_b">Tier B — European/Exotic (European + luxury/high‑complexity)</option>
                       </select>
@@ -1046,46 +1069,47 @@
                     <div class="actions" style="margin-top:0;">
                       <a class="btn danger" id="payBtn" href="#" target="_blank" rel="noopener">Pay Now</a>
                       <button class="btn ghost" id="paidBtn" type="button">Verify Payment</button>
+                      <a class="btn ghost" href="#sample" style="margin-left:auto;">See Sample Output</a>
                     </div>
                     <div class="microStatus">
                       <span class="chip"><b>Payment:</b> <span id="payStatus" class="warn">Not confirmed</span></span>
                       <span class="chip"><b>Request ID:</b> <span class="mono" id="ridMini">VV-0000-00000</span></span>
                     </div>
-                    <input type="hidden" id="paid_confirmed" name="paid_confirmed" value="false" />
-                    <input type="hidden" id="payment_reference" name="payment_reference" value="" />
+                    <input type="hidden" id="paid_confirmed" name="paid_confirmed" value="false">
+                    <input type="hidden" id="payment_reference" name="payment_reference" value="">
                   </div>
 
                   <div class="field">
                     <div class="label">Symptoms / Context</div>
-                    <textarea name="symptoms" placeholder="What are you seeing/hearing? When did it start? What changed? Any recent repairs?" required></textarea>
+                    <textarea name="symptoms" placeholder="What are you seeing/hearing? When did it start? What changed? Any recent repairs?" required=""></textarea>
                   </div>
 
                   <div class="grid2">
                     <div class="field">
                       <div class="label">DTC Codes (optional)</div>
-                      <input name="dtc_codes" class="mono" type="text" placeholder="P0300, U0100, 43FF..." />
+                      <input name="dtc_codes" class="mono" type="text" placeholder="P0300, U0100, 43FF...">
                     </div>
                     <div class="field">
                       <div class="label">Evidence Links (optional)</div>
-                      <input id="evidenceLinks" name="evidence_links" type="text" placeholder="Google Drive / iCloud / Imgur / etc." />
+                      <input id="evidenceLinks" name="evidence_links" type="text" placeholder="Google Drive / iCloud / Imgur / etc.">
                     </div>
                   </div>
 
                   <div class="field">
                     <div class="label">Deliverables</div>
                     <div class="options">
-                      <label class="opt"><input type="checkbox" name="deliverables" value="Summary"/> <b>Summary</b></label>
-                      <label class="opt"><input type="checkbox" name="deliverables" value="Forecast"/> <b>Forecast</b></label>
-                      <label class="opt"><input type="checkbox" name="deliverables" value="Parts Blueprint"/> <b>Parts Blueprint</b></label>
-                      <label class="opt"><input type="checkbox" name="deliverables" value="VINvoyant Guide"/> <b>VINvoyant Guide</b></label>
-                      <label class="opt"><input type="checkbox" name="deliverables" value="VINvoyant Dispatch"/> <b>VINvoyant Dispatch</b></label>
+                      <label class="opt"><input type="checkbox" name="deliverables" value="Summary"> <b>Summary</b></label>
+                      <label class="opt"><input type="checkbox" name="deliverables" value="Forecast"> <b>Forecast</b></label>
+                      <label class="opt"><input type="checkbox" name="deliverables" value="Parts Blueprint"> <b>Parts Blueprint</b></label>
+                      <label class="opt"><input type="checkbox" name="deliverables" value="VINvoyant Guide"> <b>VINvoyant Guide</b></label>
+                      <label class="opt"><input type="checkbox" name="deliverables" value="VINvoyant Dispatch"> <b>VINvoyant Dispatch</b></label>
                     </div>
                   </div>
 
                   <!-- Hidden metadata fields -->
-                  <input type="hidden" name="source" value="vinvoyant-onepage-v3" />
-                  <input type="hidden" id="request_id" name="request_id" value="" />
-                  <input type="hidden" id="vin_valid" name="vin_valid" value="false" />
+                  <input type="hidden" name="source" value="vinvoyant-onepage-v3">
+                  <input type="hidden" id="request_id" name="request_id" value="">
+                  <input type="hidden" id="vin_valid" name="vin_valid" value="false">
 	
 	                  <div class="actions">
 	                    <button class="btn" id="submitBtn" type="submit">Submit Request</button>
@@ -1112,36 +1136,16 @@
                     <div style="margin-top:8px; opacity:.85">If you have scan screenshots, reply to the confirmation email with attachments — and include your Request ID.</div>
                   </div>
                   </div>
-                </div>
-              </form>
+                </form></div>
+              
 
               <p style="margin:12px 2px 0; color: rgba(215,220,226,.68); line-height:1.5; font-size: 13px;">
                 This intake is designed to feed an inbox, webhook, or CRM. No “mystery scraping.” Just technician-grade signal.
               </p>
-            </div>
-          </aside>
-
-	          <div class="headline reveal">
-	            <div class="kicker"><span class="dot" aria-hidden="true"></span> concierge vehicle intelligence</div>
-	            <h1>See the car’s future.<br/>Price the present.</h1>
-	            <p class="sub">
-	              VINvoyant turns a VIN + your symptoms into a clean plan: maintenance forecast, diagnosis triage,
-	              parts pricing + dispatch, and torque‑spec repair guidance — delivered with concierge clarity.
-	            </p>
-              <div class="actions reveal" style="margin-top: 14px;">
-                <a class="btn danger" href="#start" role="button">Start a Request</a>
-                <a class="btn ghost" href="#pricing" role="button">Access pricing</a>
-                <a class="btn ghost" href="#how" role="button">How it works</a>
-              </div>
-              <div class="pillRow">
-                <div class="pill"><strong>VIN-Based</strong> forecast</div>
-                <div class="pill"><strong>Remote</strong> diagnosis triage</div>
-                <div class="pill"><strong>Parts</strong> pricing + dispatch</div>
-                <div class="pill"><strong>Repair</strong> instructions + interpretation</div>
-              </div>
-	          </div>
+            </aside></div>
+          
         </div>
-      </div>
+      
     </section>
 
     <!-- JUMP GRID (3×3×3 headings) -->
@@ -1160,7 +1164,6 @@
           <a class="mini reveal jumpCard" href="#upload"><div class="miniIn"><h3>Upload kit</h3><p>What to capture and how to send evidence fast.</p></div></a>
           <a class="mini reveal jumpCard" href="#deliverables"><div class="miniIn"><h3>Deliverables</h3><p>What gets delivered and how it’s structured.</p></div></a>
           <a class="mini reveal jumpCard" href="#inperson"><div class="miniIn"><h3>In‑person</h3><p>Verify / Confirm / Execute options by region.</p></div></a>
-          <a class="mini reveal jumpCard" href="#faq"><div class="miniIn"><h3>FAQ</h3><p>Short answers to common questions.</p></div></a>
           <a class="mini reveal jumpCard" href="#top"><div class="miniIn"><h3>Top</h3><p>Return to the top of the page.</p></div></a>
         </div>
       </div>
@@ -1175,11 +1178,15 @@
             <p>Pricing is tiered by platform complexity. Remote services are nationwide; in-person services vary by region.</p>
           </div>
 
-          <div class="tierInfo reveal">
-            <b>Vehicle tiers (how pricing works)</b><br/>
-            Tier A — Import/Domestic: most Japanese + domestic mainstream platforms.<br/>
-            Tier B — European/Exotic: European + luxury/performance + high‑complexity platforms (and anything requiring specialized diagnostics/coding).<br/>
-            If specialized diagnostics, coding/programming, or unusual module complexity is required, pricing may be adjusted to Tier B regardless of origin.
+          <!-- Vehicle Tiers Info Card -->
+          <div class="tier reveal" style="margin-bottom: 18px;">
+            <h3>Vehicle Tiers</h3>
+            <div class="priceSub">How pricing works</div>
+            <p style="color: rgba(215,220,226,.78); line-height: 1.5; margin-top: 10px;">
+              <b>Tier A — Import/Domestic:</b> most Japanese + domestic mainstream platforms.<br>
+              <b>Tier B — European/Exotic:</b> European + luxury/performance + high‑complexity platforms.<br>
+              <small>If specialized diagnostics, coding/programming, or unusual module complexity is required, pricing may be adjusted to Tier B regardless of origin.</small>
+            </p>
           </div>
 
           <div class="pricing">
@@ -1221,21 +1228,55 @@
             </div>
           </div>
 
-          <div class="tierInfo reveal" style="margin-top:14px;">
-            <b>Mission briefs (one-offs)</b><br/>
-            VINvoyant Forecast (maintenance only): Tier A $89 • Tier B $119<br/>
-            VINvoyant Triage (warning light / symptom): Tier A $109 • Tier B $139<br/>
-            VINvoyant Blueprint (parts only): Tier A $89 • Tier B $119<br/>
-            Pre‑Purchase / Used Car Review (remote, document-based): Tier A $169 • Tier B $219
+          <div class="sectionHead reveal" style="margin-top: 36px; margin-bottom: 14px;">
+            <div><h2>Mission Briefs</h2></div>
+            <p>Targeted, single-issue intelligence.</p>
           </div>
 
-          <div class="tierInfo reveal" style="margin-top:14px;">
-            <b>Remote add-ons</b><br/>
-            VINvoyant Guide (step-by-step + tool notes + torque specs when applicable): +$59<br/>
-            VINvoyant Dispatch (sourcing + coordination; client pays parts + delivery): +$49
+          <!-- Mission Briefs Grid -->
+          <div class="pricing">
+            <div class="tier reveal">
+                <h3>Forecast</h3>
+                <div class="price">Tier A <b>$89</b> • Tier B <b>$119</b></div>
+                <div class="priceSub">Maintenance only</div>
+            </div>
+            <div class="tier reveal">
+                <h3>Triage</h3>
+                <div class="price">Tier A <b>$109</b> • Tier B <b>$139</b></div>
+                <div class="priceSub">Warning light / symptom</div>
+            </div>
+            <div class="tier reveal">
+                <h3>Blueprint</h3>
+                <div class="price">Tier A <b>$89</b> • Tier B <b>$119</b></div>
+                <div class="priceSub">Parts only</div>
+            </div>
+            <div class="tier reveal">
+                <h3>Review</h3>
+                <div class="price">Tier A <b>$169</b> • Tier B <b>$219</b></div>
+                <div class="priceSub">Remote Pre-Purchase / Document-based</div>
+            </div>
           </div>
 
-          <p class="reveal" style="margin:14px 0 0; color: rgba(215,220,226,.68); line-height:1.55; font-size: 15px;">
+          <div class="sectionHead reveal" style="margin-top: 36px; margin-bottom: 14px;">
+            <div><h2>Remote Add-ons</h2></div>
+            <p>Enhance your plan.</p>
+          </div>
+
+          <!-- Add-ons Grid -->
+          <div class="pricing">
+            <div class="tier reveal">
+                <h3>Guide</h3>
+                <div class="price"><b>+$59</b></div>
+                <div class="priceSub">Step-by-step + tool notes + torque specs</div>
+            </div>
+            <div class="tier reveal">
+                <h3>Dispatch</h3>
+                <div class="price"><b>+$49</b></div>
+                <div class="priceSub">Sourcing + coordination (client pays parts + delivery)</div>
+            </div>
+          </div>
+
+          <p class="reveal" style="margin:24px 0 0; color: rgba(215,220,226,.68); line-height:1.55; font-size: 15px;">
             Note: VINvoyant does not pull proprietary history reports without authorization. If you have a report (Carfax/AutoCheck/etc.),
             attach it via link and it will be interpreted with technician logic.
           </p>
@@ -1248,126 +1289,7 @@
       </div>
     </section>
 
-    <!-- VALUE PROPS -->
-    <section>
-      <div class="wrap">
-        <div class="sectionHead reveal">
-          <div><h2>Luxury concierge, engineered logic.</h2></div>
-          <p>Not a generic “scan tool reading.” This is structured reasoning: what’s likely, what’s urgent, what’s worth the money, and what’s noise.</p>
-        </div>
 
-        <div class="grid3">
-          <div class="mini reveal">
-            <div class="miniIn">
-              <div class="icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 3v6l4 2" stroke="rgba(49,214,255,.95)" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M21 12a9 9 0 1 1-9-9" stroke="rgba(215,220,226,.9)" stroke-width="2" opacity=".85"/>
-                </svg>
-              </div>
-              <h3>Maintenance Forecast</h3>
-              <p>VIN-based service cadence + known failure patterns. You get a priority plan, not a panic spiral.</p>
-            </div>
-          </div>
-
-          <div class="mini reveal">
-            <div class="miniIn">
-              <div class="icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M4 19V5" stroke="rgba(215,220,226,.9)" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M4 15h16" stroke="rgba(215,220,226,.9)" stroke-width="2" stroke-linecap="round" opacity=".85"/>
-                  <path d="M8 11h12" stroke="rgba(49,214,255,.95)" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M8 7h10" stroke="rgba(215,220,226,.9)" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-                </svg>
-              </div>
-              <h3>Diagnosis Triage</h3>
-              <p>DTC interpretation + symptom logic + “what to test next.” Confidence-rated, human-readable.</p>
-            </div>
-          </div>
-
-          <div class="mini reveal">
-            <div class="miniIn">
-              <div class="icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M3 7h18l-2 10H5L3 7Z" stroke="rgba(215,220,226,.9)" stroke-width="2" />
-                  <path d="M7 17a2 2 0 1 0 0 4a2 2 0 0 0 0-4Z" stroke="rgba(49,214,255,.95)" stroke-width="2"/>
-                  <path d="M17 17a2 2 0 1 0 0 4a2 2 0 0 0 0-4Z" stroke="rgba(49,214,255,.95)" stroke-width="2"/>
-                </svg>
-              </div>
-              <h3>Parts + Dispatch</h3>
-              <p>Price the parts, pick the source, and (optionally) dispatch delivery. You stay in control.</p>
-            </div>
-          </div>
-
-          <div class="mini reveal">
-            <div class="miniIn">
-              <div class="icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7Z" stroke="rgba(49,214,255,.95)" stroke-width="2" />
-                </svg>
-              </div>
-              <h3>Repair Guidance</h3>
-              <p>Step-by-step execution notes, tool guidance, and torque‑spec clarity (when applicable).</p>
-            </div>
-          </div>
-
-          <div class="mini reveal">
-            <div class="miniIn">
-              <div class="icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M20 7l-8-4-8 4v10l8 4 8-4V7Z" stroke="rgba(215,220,226,.9)" stroke-width="2"/>
-                  <path d="M9 12l2 2 4-5" stroke="rgba(49,214,255,.95)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <h3>Pre‑Purchase Sanity Check</h3>
-              <p>Evidence‑based “buy / pass / negotiate” logic so the decision doesn’t rely on vibes.</p>
-            </div>
-          </div>
-
-          <div class="mini reveal">
-            <div class="miniIn">
-              <div class="icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M4 20V6" stroke="rgba(215,220,226,.9)" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M4 16h16" stroke="rgba(215,220,226,.9)" stroke-width="2" stroke-linecap="round" opacity=".85"/>
-                  <path d="M8 12h12" stroke="rgba(49,214,255,.95)" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M8 8h10" stroke="rgba(215,220,226,.9)" stroke-width="2" stroke-linecap="round" opacity=".7"/>
-                </svg>
-              </div>
-              <h3>Confidence Ratings</h3>
-              <p>Clear probability language: what’s likely, what would change the conclusion, and what to test next.</p>
-            </div>
-          </div>
-
-          <div class="mini reveal">
-            <div class="miniIn">
-              <div class="icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M5 4h10l4 4v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" stroke="rgba(215,220,226,.9)" stroke-width="2"/>
-                  <path d="M9 13h6" stroke="rgba(49,214,255,.95)" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M9 17h8" stroke="rgba(215,220,226,.9)" stroke-width="2" stroke-linecap="round" opacity=".75"/>
-                </svg>
-              </div>
-              <h3>Forwardable Summary</h3>
-              <p>Built to be sent to a shop without losing meaning: priority, parts, and test logic in plain English.</p>
-            </div>
-          </div>
-
-          <div class="mini reveal">
-            <div class="miniIn">
-              <div class="icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path d="M7 7h10M7 12h10M7 17h10" stroke="rgba(215,220,226,.9)" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M4 4h16v16H4V4Z" stroke="rgba(49,214,255,.95)" stroke-width="2" opacity=".85"/>
-                </svg>
-              </div>
-              <h3>In‑Person Options</h3>
-              <p>When hands-on is needed: mobile PPI (Verify), on-site diag (Confirm), or execution via VINvoyant or partners.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- HOW IT WORKS -->
     <section id="how">
@@ -1590,7 +1512,7 @@
             <div class="mock">
               <h4>Seal of Completion</h4>
               <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-	                <img src="assets/vinvoyant-seal.svg" alt="VINvoyant Seal" style="width: 180px; height:auto; opacity:.92; filter: drop-shadow(0 14px 24px rgba(0,0,0,.45));"/>
+	                <img src="assets/EDrop_1767710018955.png" alt="VINvoyant Seal" style="width: 180px; height:auto; opacity:.92;" loading="lazy">
                 <div>
                   <div class="row" style="margin:0">
                     <div>
@@ -1634,11 +1556,11 @@
             <div class="callout">
               <h4>What to capture (ranked)</h4>
               <ul class="list" aria-label="Evidence list">
-                <li><span><b>Scan screenshots</b><br/><span style="opacity:.85">Codes + freeze frame + live data snapshot if possible</span></span><span class="hint">HIGH</span></li>
-                <li><span><b>20–30s video</b><br/><span style="opacity:.85">Cold start / symptom moment / cluster warning lights</span></span><span class="hint">HIGH</span></li>
-                <li><span><b>Photos</b><br/><span style="opacity:.85">Leaks, broken connectors, worn belts, fluid level evidence</span></span><span class="hint">MED</span></li>
-                <li><span><b>Recent work</b><br/><span style="opacity:.85">What changed recently: parts replaced, battery, jumps, tire size, etc.</span></span><span class="hint">MED</span></li>
-                <li><span><b>History report</b><br/><span style="opacity:.85">Carfax/AutoCheck PDF or screenshots (if you have it)</span></span><span class="hint">NICE</span></li>
+                <li><span><b>Scan screenshots</b><br><span style="opacity:.85">Codes + freeze frame + live data snapshot if possible</span></span><span class="hint">HIGH</span></li>
+                <li><span><b>20–30s video</b><br><span style="opacity:.85">Cold start / symptom moment / cluster warning lights</span></span><span class="hint">HIGH</span></li>
+                <li><span><b>Photos</b><br><span style="opacity:.85">Leaks, broken connectors, worn belts, fluid level evidence</span></span><span class="hint">MED</span></li>
+                <li><span><b>Recent work</b><br><span style="opacity:.85">What changed recently: parts replaced, battery, jumps, tire size, etc.</span></span><span class="hint">MED</span></li>
+                <li><span><b>History report</b><br><span style="opacity:.85">Carfax/AutoCheck PDF or screenshots (if you have it)</span></span><span class="hint">NICE</span></li>
               </ul>
               <div class="note">Pro move: name your folder <span class="mono" id="ridFolder">VV-0000-00000</span> so your evidence stays married to your ticket.</div>
             </div>
@@ -1759,46 +1681,16 @@
         </div>
 
         <div class="tierInfo" style="margin-top:14px;">
-          <b>In-person add-ons</b><br/>
-          Paint meter / bodywork scan: +$49<br/>
-          Borescope (access permitting): +$79<br/>
-          Lift-access inspection (meet at a cooperating shop): +$129<br/>
+          <b>In-person add-ons</b><br>
+          Paint meter / bodywork scan: +$49<br>
+          Borescope (access permitting): +$79<br>
+          Lift-access inspection (meet at a cooperating shop): +$129<br>
           Travel fee: $0 within 15 miles, then $1.25/mile (or flat-rate by region)
         </div></details>
       </div>
     </section>
 
-    <!-- FAQ -->
-    <section id="faq">
-      <div class="wrap">
-        <div class="sectionHead reveal">
-          <div><h2>FAQ</h2></div>
-          <p>Short answers. Long competence.</p>
-        </div>
 
-        <div class="reveal">
-          <details>
-            <summary>Is this “just a VIN decoder”?</summary>
-            <p>No. VIN decoding is a starting key. VINvoyant’s value is the technician reasoning: prioritization, testing logic, and cost-smart execution.</p>
-          </details>
-
-          <details>
-            <summary>What should I include for the best diagnosis?</summary>
-            <p>Scan-tool screenshots (codes + freeze-frame if available), a short video of the symptom, photos of leaks/wear, and any recent work performed.</p>
-          </details>
-
-          <details>
-            <summary>Can you tell me exactly what’s wrong remotely?</summary>
-            <p>Sometimes. When certainty requires hands-on tests, you’ll get the next-best test plan and what outcomes mean. That’s still power.</p>
-          </details>
-
-          <details>
-            <summary>How do I connect this to a real inbox / CRM?</summary>
-            <p>Use Netlify Forms notifications, or send the intake to a webhook/CRM from the included serverless function. This page is already wired for Netlify Forms.</p>
-          </details>
-        </div>
-      </div>
-    </section>
 
     <!-- FINAL CTA -->
     <section>
@@ -2314,5 +2206,6 @@
     if(savedSession) verifyExistingPayment(savedSession);
 
   </script>
-</body>
-</html>
+
+
+</body></html>
