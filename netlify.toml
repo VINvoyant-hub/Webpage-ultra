@@ -2,3 +2,13 @@
   publish = "."
   functions = "netlify/functions"
 
+# Configure Cloudinary plugin
+# Note: The cloudName "demo" is Cloudinary's public demo account
+# For production use, replace with your actual Cloudinary cloud name
+[[plugins]]
+  package = "netlify-plugin-cloudinary"
+  [plugins.inputs]
+    cloudName = "demo"
+    deliveryType = "fetch"
+
+
